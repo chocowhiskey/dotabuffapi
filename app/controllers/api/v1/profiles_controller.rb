@@ -29,31 +29,39 @@ module Api
           @winRate = element.text.strip
         end
 
-        # get the latest matches hero
+        # get the latest matches hero + get if latest matches won or lost
         @elements = []
         html_doc.search('.r-body a').each do |element|
           @elements.push(element.text)
         end
         # filter empty elements from array
         @elements = @elements.reject { |c| c.empty? }
-
         # Delete not-hero names from the array
-        @heros = []
+        @herosAndMore = []
         @elements.each do |element|
           # returns false if element contains numbers
           if !/\d/.match?(element)
-            @heros.push(element)
+            @herosAndMore.push(element)
           end
-
-          @heros = @heros.reject {|c| c === 'Lost Match' || c === 'Won Match' }
+          @heros = @herosAndMore.reject {|c| c === 'Lost Match' || c === 'Won Match' }
         end
+        @winOrLoseLastPlayedMatches = []
+        @herosAndMore.each do |element|
+          if element === 'Lost Match' || element === 'Won Match' 
+            @winOrLoseLastPlayedMatches.push(element)
+          end
+        end
+        # filtering the heros depending on latest matches or most played heros
+        @mostPlayedHeros = @heros.first(10)
+        @latestMatchesHeros = @heros.last(15)
+
         
 
 
         render json: {
           status: 'SUCCESS',
           message: 'Loaded',
-          data: [@wins,@losses,@abandons, @winRate, @heros]
+          data: [@wins,@losses,@abandons, @winRate, @mostPlayedHeros, @latestMatchesHeros, @winOrLoseLastPlayedMatches]
         }, status: :ok
       end
     end
