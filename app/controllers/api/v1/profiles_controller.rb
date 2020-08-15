@@ -56,18 +56,23 @@ module Api
         @latestMatchesHeros = @heros.last(15)
 
         # find the duration of the last matches
-        @durations = []
+        @durationsLastMatches = []
         html_doc.search('.r-duration').each do |durationContainer|
-          @durations.push(durationContainer.text.gsub("Duration", ""))
+          @durationsLastMatches.push(durationContainer.text.gsub("Duration", ""))
         end
 
+        # get the KDA of last matches
+        @kdaLastMatches = []
+        html_doc.search('.kda-record').each do |kda|
+          @kdaLastMatches.push(kda.text)
+        end
         
 
 
         render json: {
           status: 'SUCCESS',
           message: 'Loaded',
-          data: [@wins,@losses,@abandons, @winRate, @mostPlayedHeros, @latestMatchesHeros, @winOrLoseLastPlayedMatches,@durations]
+          data: [@wins,@losses,@abandons, @winRate, @mostPlayedHeros, @latestMatchesHeros, @winOrLoseLastPlayedMatches,@durationsLastMatches, @kdaLastMatches]
         }, status: :ok
       end
     end
