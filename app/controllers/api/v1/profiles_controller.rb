@@ -1,13 +1,13 @@
 module Api
-  module v1
-    class HomesController < ApplicationController
+  module V1
+    class ProfilesController < ApplicationController
       def index
         @profile
         render json: {
           status: 'SUCCESS',
           message: 'Loaded',
           data: @profile
-        }
+        }, status: :ok
       end
     end
   end
