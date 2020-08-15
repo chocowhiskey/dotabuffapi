@@ -55,13 +55,19 @@ module Api
         @mostPlayedHeros = @heros.first(10)
         @latestMatchesHeros = @heros.last(15)
 
+        # find the duration of the last matches
+        @durations = []
+        html_doc.search('.r-duration').each do |durationContainer|
+          @durations.push(durationContainer.text.gsub("Duration", ""))
+        end
+
         
 
 
         render json: {
           status: 'SUCCESS',
           message: 'Loaded',
-          data: [@wins,@losses,@abandons, @winRate, @mostPlayedHeros, @latestMatchesHeros, @winOrLoseLastPlayedMatches]
+          data: [@wins,@losses,@abandons, @winRate, @mostPlayedHeros, @latestMatchesHeros, @winOrLoseLastPlayedMatches,@durations]
         }, status: :ok
       end
     end
