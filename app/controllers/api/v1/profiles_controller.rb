@@ -73,7 +73,7 @@ module Api
         render json: {
           status: 'SUCCESS',
           message: 'Loaded',
-          data: [@username, @wins,@losses,@abandons, @winRate, @mostPlayedHeros, @latestMatchesHeros, @winOrLoseLastPlayedMatches,@durationsLastMatches, @kdaLastMatches]
+          data: ['username': @username, 'allTimeWins': @wins, 'allTimeLosses': @losses, 'allTimeAbandons': @abandons, 'winRate': @winRate, 'mostPlayedHeros': @mostPlayedHeros, 'latestMatchesHeros': @latestMatchesHeros, 'winOrLoseLastPlayedMatches': @winOrLoseLastPlayedMatches, 'durationsLastMatches': @durationsLastMatches, 'kdaLastMatches': @kdaLastMatches]
         }, status: :ok
       end
     end
