@@ -11,6 +11,9 @@ module Api
         html_file = open(url).read
         html_doc = Nokogiri::HTML(html_file)
 
+        # get the username
+        @username = html_doc.search('.header-content-title').text.gsub("Overview", "")
+
         # get the wins
         html_doc.search('.wins').each do |element|
           @wins = element.text.strip
@@ -66,13 +69,11 @@ module Api
         html_doc.search('.kda-record').each do |kda|
           @kdaLastMatches.push(kda.text)
         end
-        
-
 
         render json: {
           status: 'SUCCESS',
           message: 'Loaded',
-          data: [@wins,@losses,@abandons, @winRate, @mostPlayedHeros, @latestMatchesHeros, @winOrLoseLastPlayedMatches,@durationsLastMatches, @kdaLastMatches]
+          data: [@username, @wins,@losses,@abandons, @winRate, @mostPlayedHeros, @latestMatchesHeros, @winOrLoseLastPlayedMatches,@durationsLastMatches, @kdaLastMatches]
         }, status: :ok
       end
     end
